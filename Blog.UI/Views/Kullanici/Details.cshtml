@@ -1,0 +1,85 @@
+﻿@model Blog.UI.Models.Kullanici
+@using Blog.UI.Models;
+@{
+    ViewBag.Title = "Details";
+    var aktifKullanici = (Kullanici)Session["aktifKullanici"];
+}
+
+
+@if (Model.Id == aktifKullanici.Id)
+{
+    <h2 class="text-center text-danger"> Profilim</h2>
+        }
+        else
+        {
+        <h2 class="text-center text-danger">@Model.KullaniciAdi<span style="color:black;">'nin Profili</span></h2>
+        }
+
+        <div>
+
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayName("Rol Adı")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Yetki.Adi)
+                </dd>
+
+                <dt>
+                    @Html.DisplayName("Kullanıcı Adı")
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.KullaniciAdi)
+                </dd>
+
+
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Ad)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Ad)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Soyad)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Soyad)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Tarih)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Tarih)
+                </dd>
+
+            </dl>
+        </div>
+        <p>
+
+            @if (aktifKullanici.YetkiID > 2 || aktifKullanici.Id == Model.Id)
+            {
+                <a class="btn btn-info" href="/Kullanici/Edit/@Model.Id">Düzenle</a>
+               
+
+
+            }
+
+            <a href="/Kullanici" class="btn btn-success">Anasayfaya Geri Dön</a>
+        </p>

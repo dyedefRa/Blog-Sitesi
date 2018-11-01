@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Blog.UI.Models.Yorum>
+    @using Blog.UI.Models;
+@{
+    var aktifKullanici = (Kullanici)Session["aktifKullanici"];
+
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Yorum Sahibi :")
+        </th>
+      
+        <th>
+            @Html.DisplayName("Yorum :")
+        </th>
+        <th>
+            @Html.DisplayName("Tarih :")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+             @Html.DisplayFor(modelItem => item.Kullanici.KullaniciAdi)  
+        </td>
+      
+        <td>
+            @Html.DisplayFor(modelItem => item.Icerik)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tarih)
+        </td>
+        <td>
+            @if (item.KullaniciID==aktifKullanici.Id||aktifKullanici.YetkiID>3)
+            {
+               
+        <a  class="yorumSil" data-mer="@item.Id" >Sil</a>
+            }
+        </td>
+    </tr>
+}
+
+</table>

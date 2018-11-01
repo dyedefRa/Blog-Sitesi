@@ -1,0 +1,21 @@
+﻿@model Blog.UI.Models.Kullanici
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="text-center text-danger"> Hoşgeldin<span style="color:red;"> @Model.KullaniciAdi</span></h2>
+
+<hr />
+
+
+<hr />
+
+
+<hr />
+@Html.ActionLink("Makale Yaz", "Create", "Makale")  
+<hr />
+ @Html.ActionLink("Makalelerimi Listele", "MakaleListele", "Makale")
+<div class="text-right">Yazdığınız makale sayısı : @Model.Makale.Count()</div>
+
+
+

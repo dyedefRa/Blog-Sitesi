@@ -1,0 +1,73 @@
+﻿@model Blog.UI.Models.Kullanici
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Silme işlemi</h2>
+
+<h3>Bu hesabı silmek istediğinize emin misiniz? (Geri dönüşü yoktur)</h3>
+<div>
+
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Yetkisi :")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Yetki.Adi)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Kullanıcı Adı :")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KullaniciAdi)
+        </dd>
+
+       
+        <dt>
+            @Html.DisplayName("Adı :")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ad)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Soyadı :")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Soyad)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.Display("Email :")
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Kayıt Tarihi :")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tarih)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Sil" class="btn btn-danger" /> |
+            <a href="/Home/Index" class="btn btn-success">Iptal</a>
+        </div>
+    }
+</div>

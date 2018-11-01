@@ -1,0 +1,78 @@
+﻿@using Blog.UI.Models;
+@{ 
+    var kullanici = (Kullanici)Session["aktifKullanici"];
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/bootstrap-tagsinput.css" rel="stylesheet" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <link href="~/Scripts/Main.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("My Blog", "Index", "Kullanici", new { area = "" }, new { @class = "navbar-brand", @style = "color:azure" })
+                @if (Session["aktifKullanici"] != null)
+                {
+                    <a href="~/Kullanici/Details/@kullanici.Id" class="navbar-brand">Profilim</a>
+                    <a href="~/Makale/MakaleListele" class="navbar-brand">Makalelerim</a>
+
+                    <a href="~/Makale" class="navbar-brand">Bütün Makaleler</a>
+                }
+
+            </div>
+
+            <div class="navbar-collapse collapse navbar-right">
+                <ul class="nav navbar-nav">
+                    @{ if (Session["aktifKullanici"] != null)
+                        {
+
+
+                            var aktifKullaniciAdi = kullanici.KullaniciAdi;
+                            @*@Html.ActionLink(aktifKullaniciAdi, "Details" ,"Kullanici",kullanici.Id, new { @class = "navbar-brand" })*@
+                            <a class="navbar-brand" href="/Kullanici/Details/@kullanici.Id">@aktifKullaniciAdi</a>
+                            @Html.ActionLink("Çıkış Yap", "Logout", "Home", new
+                           {
+                               area = "" }, new { @class = "navbar-brand" })
+                        }
+                        else
+                        {
+
+                            @Html.ActionLink("Kayıt Ol", "Create", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                            @Html.ActionLink("Giris Yap", "Login", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                        }
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Blogum</p>
+        </footer>
+    </div>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-tagsinput.js"></script>
+    <script src="~/Scripts/Main.js"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

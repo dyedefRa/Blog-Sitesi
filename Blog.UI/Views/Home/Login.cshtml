@@ -1,0 +1,58 @@
+﻿@model Blog.UI.Models.Kullanici
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Giriş Yap</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Kullanici Girişi</h4>
+    <hr />
+    @if (TempData["loginHatasi"] != null)
+    {
+        <p style="font-weight:bold;color:red;">@TempData["loginHatasi"].ToString()</p>
+
+
+    }
+    else if (TempData["loginHatasi2"] != null)
+    {
+        <p style="font-weight:bold;color:red;">@TempData["loginHatasi2"].ToString()</p>
+    }
+    <hr />
+
+
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.KullaniciAdi, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.KullaniciAdi, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.KullaniciAdi, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Parola, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="password" class = "form-control"  name="Parola" value="" />
+            @Html.ValidationMessageFor(model => model.Parola, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Giriş Yap" class="btn btn-danger" />
+        </div>
+    </div>
+</div>
+}
+
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@

@@ -1,0 +1,1 @@
+﻿Kullanici Delete POST TA eksik var

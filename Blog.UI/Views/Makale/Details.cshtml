@@ -1,0 +1,139 @@
+﻿@model Blog.UI.Models.Makale
+@using Blog.UI.Models;
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2 class="text-center text-danger">@Model.Baslik</h2>
+
+<div>
+    <h3>   Yazar : <a href="/Kullanici/Details/@Model.KullaniciID">@Model.Kullanici.KullaniciAdi</a></h3>
+
+    <hr />
+
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Kategori Adı :")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Kategori.Ad)
+        </dd>
+
+
+
+        <dt>
+            @Html.DisplayName("Başlık :")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Baslik)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("İçerik :")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Icerik)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tarih)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tarih)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <br />
+    @{ var aktifKullanici = (Kullanici)Session["aktifKullanici"];
+
+    }
+    @if (aktifKullanici.YetkiID > 2 || aktifKullanici.Id == Model.KullaniciID)
+    {
+        <a class="btn btn-info" href="/Makale/Edit/@Model.Id">Düzenle</a>
+
+        <a class="btn btn-primary" href="/Makale/EtiketEkle/@Model.Id">Etiket Ekle</a>
+
+
+    }
+
+    <a href="/Makale/MakaleListele" class="btn btn-success">Makalelerime Geri Dön</a>
+</p>
+
+<br />
+@*YORUM YAPMA OLAYI*@
+<hr />
+<h3 class=" text-info">Yorum Bırak</h3>
+<hr />
+<div>
+    <textarea t class="form-control" placeholder="Yorum bırakınız..." id="yorum" rows="6" cols="50"></textarea>
+    <br />
+    <a href="javascript: return false; " id="yorumYap" class="btn btn-default">Yorum Yap</a>
+</div>
+
+@if(Model.Yorum.Count!=0)
+{<hr />
+    <h3 class=" text-info">Yorumlar</h3>
+    <hr />
+
+    
+        Html.RenderPartial("Partial_YorumListeleyici", Model.Yorum);
+    
+}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#yorumYap').click(function () {
+                var mesaj = $('#yorum').val();
+                var makaleID =@Model.Id;
+                var yorumYapanID=@aktifKullanici.Id;
+                $.ajax({
+                    type: 'POST',
+                    url: '/Makale/AjaxYorum/',
+                    dataType: 'json',
+                    data: { yorumYapanID: yorumYapanID, makaleID: makaleID, yorum: mesaj },
+                    success: function (data) {
+                        if (data) {
+                            alert(data.Mesaj);
+                            window.location.reload();
+
+                        } else {
+                            alert(data.Mesaj);
+                        }
+                    },
+                    error: function () {
+                        alert("WTF");
+                    }
+                })
+            })
+
+
+            $(".yorumSil").click(function () {
+                var sonuc = confirm("Bu yorumunuzu silmek istediğinize emin misiniz ?");
+                if (sonuc) {
+                    var yorumID = $(this).data("mer");
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Makale/AjaxYorumSil/',
+                        data: { id: yorumID },
+                        success: function (data) {
+
+                            alert(data.Mesaj);
+                            window.location.reload();
+
+                        }
+
+                    })
+                }
+
+            })
+        })
+    </script>
+
+}

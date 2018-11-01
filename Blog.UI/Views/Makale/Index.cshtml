@@ -1,0 +1,112 @@
+﻿@model IEnumerable<Blog.UI.Models.Makale>
+@using Blog.UI.Models
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+    var aktifKullanici = (Kullanici)Session["aktifKullanici"];
+}
+
+<h2 class="text-danger text-center">Tüm Makaleler</h2>
+@if (TempData["makaleBasari"] != null)
+{
+    <p style="color:red;font-weight:bold;">@TempData["makaleBasari"]</p>
+}
+else if (TempData["makaleSilOlayi"] != null)
+{
+    <p style="color:red;font-weight:bold;">@TempData["makaleSilOlayi"]</p>
+}
+
+<p>
+    @Html.ActionLink("Yeni Makale Yaz", "Create")
+</p>
+<div class="text-right">
+        <a href="#" id="reflesh"> <img src="~/App_Classes/refresh.png" width="25" height="25" alt="Alternate Text" /></a>
+        <input id="arama" type="text" name="name" placeholder="Arama Yap" class="btn-default" value="" />
+        <a id="go" class="btn btn-info" href="#">Ara</a>
+    </div>
+
+
+
+<table class="table">
+    <tr>
+        <th>
+
+            <p style="color:blueviolet;">Kategori:</p>
+        </th>
+        <th>
+            <p style="color:dodgerblue;">Yazar:</p>
+        </th>
+        <th>
+            <p style="color:forestgreen;">Başlık:</p>
+        </th>
+        <th>
+            @Html.DisplayName("İçerik:")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tarih)
+        </th>
+        @*<th></th>*@
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a style="color:blueviolet;" href="/Kategori/Details/@item.KategoriID">@item.Kategori.Ad</a>
+            </td>
+            <td>
+
+                <a href="/Kullanici/Details/@item.Kullanici.Id">@item.Kullanici.KullaniciAdi</a>
+            </td>
+            <td>
+                <a style="color:forestgreen;" href="/Makale/Details/@item.Id">@item.Baslik</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Icerik)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tarih)
+            </td>
+
+            <td>
+
+                @Html.ActionLink("Görüntüle", "Details", new { id = item.Id })
+
+                @if (item.KullaniciID == aktifKullanici.Id || aktifKullanici.YetkiID > 3)
+                {<br />
+                    @Html.ActionLink("Düzenle", "Edit", new { id = item.Id })
+                    <br />
+
+                    @Html.ActionLink("Sil", "Delete", new { id = item.Id })
+                }
+
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+@section scripts{
+    <script>
+
+
+        $(document).ready(function () {
+            $("#go").click(function () {
+                var makale = $('#arama').val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/Makale/Index/',
+                    data: { aramaOlayi: makale },
+
+                })
+            })
+
+            $('#reflesh').click(function () {
+                window.location.reload();
+            })
+        });
+    </script>
+
+}

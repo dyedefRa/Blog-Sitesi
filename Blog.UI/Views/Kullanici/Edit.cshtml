@@ -1,0 +1,143 @@
+﻿@model Blog.UI.Models.Kullanici
+@using Blog.UI.Models;
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Düzenle</h2>
+@if (TempData["editHatasi"] != null)
+{
+    <p class="uyari">@TempData["editHatasi"]</p>
+}
+else if (TempData["editHatasi2"] != null)
+{
+    <p class="uyari">@TempData["editHatasi2"]</p>
+}
+else
+{
+    <p class="uyari">@TempData["editOlayi"]</p>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.KullaniciAdi)
+        @Html.HiddenFor(model => model.Parola)
+        @Html.HiddenFor(model => model.Tarih)
+
+
+
+
+
+        <div class="form-group">
+            @Html.Label("Kullanıcı Adı", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="text" disabled name="name" value=@Model.KullaniciAdi class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ad, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Ad, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Ad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Soyad, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Soyad, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Soyad, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Parola, "Eski Parola ( Bu alanı zorunlu doldurmalısınız )", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                <input type="password" class="form-control" name="eskiParola" value="" id="eskiParola" required />
+
+                @Html.ValidationMessageFor(model => model.Parola, "", new { @class = "text-danger" })
+
+                @*<input type="checkbox" onclick="showPassword()">Parolayi Göster*@
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Parola, "Yeni Parola", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="password" class="form-control" name="yeniParola1" value="" />
+
+
+                @Html.ValidationMessageFor(model => model.Parola, "", new { @class = "text-danger", @type = "password" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Yeni Parola Uyumu", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="password" class="form-control" name="yeniParola2" value="" />
+                @Html.ValidationMessageFor(model => model.Parola, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        @{
+            var aktifKullanici = (Kullanici)Session["aktifKullanici"];
+        }
+
+        @if (aktifKullanici.YetkiID > 2)
+        {
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.YetkiID, "Yetki :", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("YetkiID", (SelectList)ViewBag.yetkiler, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.YetkiID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+        else
+        {
+            @Html.HiddenFor(Model => Model.YetkiID)
+        }
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Kaydet" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Anasayfaya geri dön", "Index", "Home")
+</div>
+
+@*@section scripts{
+    <script>
+
+        var x = document.getElementById("#YetkiID");
+        if (x.change) {
+            alert("YYES");
+
+        }
+
+    </script>
+
+}*@
+
